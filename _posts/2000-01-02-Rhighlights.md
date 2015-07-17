@@ -6,6 +6,32 @@ fa-icon: laptop
 runtime: shiny
 ---
 
+### My Co-Author Network
+
+I generated this graph with some custom code using perl, R and shiny. 
+
+
+The graph is generated using a bibtex file containing all my publications. Using custom perl scripts I extract the number of papers each unique pair of co-authors share. With this information I use the R package `igraph` to generate a graph object detailing the relationships between authors. Following this, I use the R package `shiny` to generate the reactive graph. It should be fairly easy to see that there are really two "groups" of authors, one european and on from the USA (from my PhD and first post-doc respectively). The code will soon be available on github.
+
+<iframe src="https://xlevolutionist.shinyapps.io/simple_couthor_network" width="1100" height="980">
+  <p>Your browser does not support iframes.</p>
+</iframe>   
+
+<br/> 
+<br/>
+
+
+### Genetic Drift Simulations
+
+Check out the simple genetic drift simulator. It is written using R and [Shiny](http://shiny.rstudio.com). It is remarkably straight forward to make these reactive plots using R. 
+
+<iframe src="https://xlevolutionist.shinyapps.io/shiny_drift" width="100%" height="720">
+  <p>Your browser does not support iframes.</p>
+</iframe>   
+
+<br/> 
+<br/>       
+         
 ### Copy-number variants (CNVs) in wild maize
 
 
@@ -25,25 +51,28 @@ Furthermore we note that estimates of [Tajima's D](https://en.wikipedia.org/wiki
 Previous work has examined gene loss following ancient whole genome duplication (WGD; sometimes called [polyploidy](https://en.wikipedia.org/wiki/Polyploid)) in the cotton lineage. I showed that gene loss (sometimes called fractionation) following WGD is ongoing and bias between the duplicate sub-genomes. I further suggested that this process is the result of differing recombination rates between sub-genomes. Read the full story [here](http://mbe.oxfordjournals.org/content/32/4/1063).
 
 <div style="float;padding-right: 15px;text-align:center">
-	<a href="img/cottonWGD.png"><img src="img/cottonWGD.png" alt="WGDs" title="siRNA is the ancient sub-genomes of cotton" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>
-	<figcaption>Exemplar WGD in the history of the flowering plants and the syntenic relationship between regions of the cotton and chocolate genome.</figcaption>        
-</div>  
-
-<br/> 
-<br/>
-
-<div style="float;padding-right: 15px;text-align:center">
- <a href="img/sRNA_TE.tiff"><img src="img/sRNA_TE.tiff" alt="siRNAs" title="siRNA is the ancient sub-genomes of cotton" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>
- <figcaption>small RNA molecules target the most fractionated of the duplicate cotton genomes.</figcaption>
+    <a href="img/cottonWGD.png"><img src="img/cottonWGD.png" alt="cotton WGDs" title="cotton WGDs" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>        
 </div> 
-
-### Repetitive DNA loss in tobacco  
-
-My PhD work focused on the 
 
 <div style="float;padding-right: 15px;text-align:center">
     <a href="img/sRNA_TE.tiff"><img src="img/sRNA_TE.tiff" alt="siRNAs" title="siRNA is the ancient sub-genomes of cotton" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>        
 </div> 
+    
+
+<br/> 
+<br/>       
+               
+         
+### Repetitive DNA loss in tobacco  
+
+My PhD work focused on the evolution of repetitive DNA in tobacco. Mostly the work focused on the use of fluorescent *in situ* hybridisation (FISH) and a custom build of an NGS clustering algorithm called [RepeatExplorer](http://www.repeatexplorer.org) which identifies and quantifies repeatitive sequences in complex genomes.
+
+<div style="text-align:center">
+<a class="twitter-timeline" href="https://twitter.com/SimonByfield/favorites" data-widget-id="614239767882960897">Favorite Tweets by @SimonByfield</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>   
+</div>
+
+<br/> 
+<br/> 
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

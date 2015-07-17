@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Copy-number variants (CNVs) in wild maize</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h3>Copy-number variants (CNVs) in wild maize</h3>
+
+<p>I am currently developing a novel CNV calling pipeline, currently in testing. Preliminary data (see figures below) suggest that the pipeline is working well and we have identified a ~10 MB deletion on chromosome 6 segregating in a wild population of maize (otherwise known as teosinte). 
+Furthermore we note that estimates of <a href="https://en.wikipedia.org/wiki/Tajima&#x27;s_D">Tajima&#39;s D</a> over regions where CNV segregate differ from the background &ldquo;genome-wide&rdquo; level.</p>
+
+<div style="padding-right: 15px;text-align:center">
+    <a href="img/fig_2 copy.jpeg"><img src="img/fig_2 copy.jpeg" alt="deletion" title="chr 6 deletion" width="350" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>  
+    <a href="img/fig_6 copy.jpeg"><img src="img/fig_6 copy.jpeg" alt="TD" title="TD across the genome" width="250" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>      
+</div>   
+
+<p><br/> 
+<br/>       </p>
+
+<h3>The ancient sub-genomes of cotton</h3>
+
+<p>Previous work has examined gene loss following ancient whole genome duplication (WGD; sometimes called <a href="https://en.wikipedia.org/wiki/Polyploid">polyploidy</a>) in the cotton lineage. I showed that gene loss (sometimes called fractionation) following WGD is ongoing and bias between the duplicate sub-genomes. I further suggested that this process is the result of differing recombination rates between sub-genomes. Read the full story <a href="http://mbe.oxfordjournals.org/content/32/4/1063">here</a>.</p>
+
+<div style="float;padding-right: 15px;text-align:center">
+    <a href="img/sRNA_TE.tiff"><img src="img/sRNA_TE.tiff" alt="siRNAs" title="siRNA is the ancient sub-genomes of cotton" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>        
+</div> 
+
+<pre><code class="r, echo=FALSE">drift&lt;-function(N=20,p=0.5,gen=20,reps=10, w=1) {
+  #set up a matrix to fill
+  m&lt;-matrix(nrow = gen, ncol = reps, byrow = T)
+    #for each rep
+    for ( j in 1:reps ) {
+        p1&lt;-p
+        #for each generation
+        for ( i in 1:gen) {
+            A&lt;-rbinom(1,size=2*N,p1)
+            p1&lt;-A/(2*N)
+            p1&lt;-p1*w
+            if ( p1 &gt; 1) {p1=1}
+            m[i,j]&lt;-p1
+        }#
+    }#for
+    #for each column find if it&#39;s fixed or lost
+    lost&lt;-do.call(pmin, lapply(1:nrow(m), function(i)m[i,]))
+    fixed&lt;-do.call(pmax, lapply(1:nrow(m), function(i)m[i,]))
+    lost&lt;-length(lost[lost==0])
+    fixed&lt;-length(fixed[fixed==1])
+    xscale&lt;-seq(0,dim(m)[1])
+    m&lt;-rbind(rep(p,dim(m)[2]),m)
+    #pl&lt;-qplot(x=xscale,y=m[,1], geom=&quot;point&quot;)
+  ave&lt;-rowMeans(m)
+  pl&lt;-plot(xscale,m[,1], ylim = c(0,1), type = &quot;n&quot;, ylab = &quot;Allele frequency&quot;,
+        xlab=&quot;generations&quot;, main = paste(&quot;f(A)=&quot;,p ,&quot;; Population size=&quot;,N , &quot;; lost=&quot;, lost, &quot;; fixed=&quot; , fixed, &quot;; w = &quot;, w), xlim =c(0,dim(m)[1]))+matlines(xscale, m, col = &quot;black&quot;, lty = 1, lwd = 0.6)+lines(xscale, ave , col = &quot;red&quot;, lwd = 2)
+  pl&lt;-recordPlot()
+    #pl&lt;-matlines(xscale, m, col = &quot;black&quot;, lty = 1, lwd = 0.6)
+
+    #pl&lt;-pl+lines(xscale, ave , col = &quot;red&quot;, lwd = 2)
+    z&lt;-list(&quot;m&quot;=m,
+    &quot;pl&quot;=pl, &quot;ave&quot;=ave,&quot;xscale&quot;=xscale)
+    return(z)
+}#drift
+
+</code></pre>
+
+<pre><code class="r echo = FALSE">#inputPanel(
+sliderInput(&quot;N&quot;, label = &quot;Number of Individuals:&quot;,
+              min = 1, max = 100000, value = 20, step = 1)
+
+sliderInput(&quot;p&quot;, label = &quot;Starting frequency:&quot;,
+               min = 1/100000, max = 1, value = 0.5, step = 0.0001)
+
+sliderInput(&quot;gen&quot;, label = &quot;Number of Generations:&quot;,
+              min = 1, max = 100000, value = 100, step = 1)
+
+sliderInput(&quot;reps&quot;, label = &quot;Number of replicate populations:&quot;,
+              min = 1, max = 1000, value = 100, step = 1)
+
+sliderInput(&quot;w&quot;, label = &quot;Fitness of allele:&quot;,
+              min = 0, max = 100, value = 1, step = 0.001)
+
+
+#input&lt;-sliderInput(&quot;bw_adjust&quot;, label = &quot;Bandwidth adjustment:&quot;,
+#              min = 0.2, max = 2, value = 1, step = 0.2)
+#)
+#a simple function to mimic genetic drift.
+
+test&lt;-reactive({
+  drift(N=as.numeric(input$N),p=as.numeric(input$p),reps=as.numeric(input$reps),
+                     gen=as.numeric(input$gen),w=as.numeric(input$w))
+
+})
+
+renderPlot({
+ test()
+})
+</code></pre>
+
+</body>
+
+</html>

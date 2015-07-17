@@ -1,0 +1,102 @@
+---
+title: "research highlights"
+bg: silver
+color: black
+fa-icon: laptop
+runtime: shiny
+output: html_document
+---
+
+### Copy-number variants (CNVs) in wild maize
+
+
+I am currently developing a novel CNV calling pipeline, currently in testing. Preliminary data (see figures below) suggest that the pipeline is working well and we have identified a ~10 MB deletion on chromosome 6 segregating in a wild population of maize (otherwise known as teosinte). 
+Furthermore we note that estimates of [Tajima's D](https://en.wikipedia.org/wiki/Tajima's_D) over regions where CNV segregate differ from the background "genome-wide" level.
+       
+<div style="padding-right: 15px;text-align:center">
+    <a href="img/fig_2 copy.jpeg"><img src="img/fig_2 copy.jpeg" alt="deletion" title="chr 6 deletion" width="350" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>  
+    <a href="img/fig_6 copy.jpeg"><img src="img/fig_6 copy.jpeg" alt="TD" title="TD across the genome" width="250" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>      
+</div>   
+
+<br/> 
+<br/>       
+         
+### The ancient sub-genomes of cotton  
+
+Previous work has examined gene loss following ancient whole genome duplication (WGD; sometimes called [polyploidy](https://en.wikipedia.org/wiki/Polyploid)) in the cotton lineage. I showed that gene loss (sometimes called fractionation) following WGD is ongoing and bias between the duplicate sub-genomes. I further suggested that this process is the result of differing recombination rates between sub-genomes. Read the full story [here](http://mbe.oxfordjournals.org/content/32/4/1063).
+
+<div style="float;padding-right: 15px;text-align:center">
+    <a href="img/sRNA_TE.tiff"><img src="img/sRNA_TE.tiff" alt="siRNAs" title="siRNA is the ancient sub-genomes of cotton" width="600" border="5" onClick="_gaq.push(['_trackEvent', 'IMGs', 'Image', 'Ironman']);"></a>        
+</div> 
+
+```{r, echo=FALSE}
+drift<-function(N=20,p=0.5,gen=20,reps=10, w=1) {
+  #set up a matrix to fill
+  m<-matrix(nrow = gen, ncol = reps, byrow = T)
+	#for each rep
+	for ( j in 1:reps ) {
+		p1<-p
+		#for each generation
+		for ( i in 1:gen) {
+			A<-rbinom(1,size=2*N,p1)
+			p1<-A/(2*N)
+			p1<-p1*w
+			if ( p1 > 1) {p1=1}
+			m[i,j]<-p1
+		}#
+	}#for
+	#for each column find if it's fixed or lost
+	lost<-do.call(pmin, lapply(1:nrow(m), function(i)m[i,]))
+	fixed<-do.call(pmax, lapply(1:nrow(m), function(i)m[i,]))
+	lost<-length(lost[lost==0])
+	fixed<-length(fixed[fixed==1])
+	xscale<-seq(0,dim(m)[1])
+	m<-rbind(rep(p,dim(m)[2]),m)
+	#pl<-qplot(x=xscale,y=m[,1], geom="point")
+  ave<-rowMeans(m)
+  pl<-plot(xscale,m[,1], ylim = c(0,1), type = "n", ylab = "Allele frequency",
+		xlab="generations", main = paste("f(A)=",p ,"; Population size=",N , "; lost=", lost, "; fixed=" , fixed, "; w = ", w), xlim =c(0,dim(m)[1]))+matlines(xscale, m, col = "black", lty = 1, lwd = 0.6)+lines(xscale, ave , col = "red", lwd = 2)
+  pl<-recordPlot()
+	#pl<-matlines(xscale, m, col = "black", lty = 1, lwd = 0.6)
+	
+	#pl<-pl+lines(xscale, ave , col = "red", lwd = 2)
+	z<-list("m"=m,
+	"pl"=pl, "ave"=ave,"xscale"=xscale)
+	return(z)
+}#drift
+
+```
+
+```{r echo = FALSE}
+#inputPanel(
+sliderInput("N", label = "Number of Individuals:",
+              min = 1, max = 100000, value = 20, step = 1)
+
+sliderInput("p", label = "Starting frequency:",
+               min = 1/100000, max = 1, value = 0.5, step = 0.0001)
+
+sliderInput("gen", label = "Number of Generations:",
+              min = 1, max = 100000, value = 100, step = 1)
+
+sliderInput("reps", label = "Number of replicate populations:",
+              min = 1, max = 1000, value = 100, step = 1)
+
+sliderInput("w", label = "Fitness of allele:",
+              min = 0, max = 1, value = 1, step = 0.001)
+
+
+#input<-sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+#              min = 0.2, max = 2, value = 1, step = 0.2)
+#)
+#a simple function to mimic genetic drift.
+
+test<-reactive({
+  drift(N=as.numeric(input$N),p=as.numeric(input$p),reps=as.numeric(input$reps),
+                     gen=as.numeric(input$gen),w=as.numeric(input$w))
+  
+})
+
+renderPlot({
+ test()
+})
+```
